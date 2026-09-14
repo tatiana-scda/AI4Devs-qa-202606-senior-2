@@ -5,6 +5,7 @@ import RecruiterDashboard from './components/RecruiterDashboard';
 import AddCandidate from './components/AddCandidateForm';
 import Positions from './components/Positions';
 import PositionDetails from './components/PositionDetails';
+import CandidatesKanbanBoard from './components/CandidatesKanbanBoard';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/add-candidate" element={<AddCandidate />} />
         <Route path="/positions" element={<Positions />} />
         <Route path="/positions/:id" element={<PositionDetails />} />
+        <Route path="/candidates-by-state" element={<CandidatesKanbanBoard />} />
       </Routes>
     </BrowserRouter>
   );
