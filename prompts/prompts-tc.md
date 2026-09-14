@@ -96,3 +96,87 @@ Test should check:
 ## 7. Validate tests
 
 Run `npm run test:e2e` and validate all tests as correctly running. If errors are found, fix the tests
+
+## 8. Fix Sonar
+
+We need to pass the Sonar quality gate. Fix the following issues:
+
+Quality Gate failed
+
+Failed conditions
+6.3% Duplication on New Code (required ≤ 3%)
+
+See analysis details on SonarQube Cloud
+Annotations
+
+Check warning on line 199 in frontend/src/services/kanbanService.js
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Handle this exception, don't catch it at all, or explain in a comment why it is ignored.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh2gCEyfh2KaVqMTFu&open=AaCh2gCEyfh2KaVqMTFu&pullRequest=8
+
+Check warning on line 90 in frontend/src/services/kanbanService.js
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Handle this exception, don't catch it at all, or explain in a comment why it is ignored.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh2gCEyfh2KaVqMTFt&open=AaCh2gCEyfh2KaVqMTFt&pullRequest=8
+
+Check failure on line 70 in frontend/src/components/CandidatesKanbanBoard.tsx
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh2gEEyfh2KaVqMTFx&open=AaCh2gEEyfh2KaVqMTFx&pullRequest=8
+
+Check warning on line 213 in frontend/src/services/kanbanService.js
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Handle this exception, don't catch it at all, or explain in a comment why it is ignored.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh2gCEyfh2KaVqMTFv&open=AaCh2gCEyfh2KaVqMTFv&pullRequest=8
+
+Check warning on line 126 in frontend/tests/candidate-phase-change.spec.ts
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Replace this fixed wait with a synchronization on an observable condition.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCiCECZ07UySxDOkuGP&open=AaCiCECZ07UySxDOkuGP&pullRequest=8
+
+Check failure on line 45 in frontend/src/components/CandidatesKanbanBoard.tsx
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Refactor this code to not nest functions more than 5 levels deep.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh2gEEyfh2KaVqMTFw&open=AaCh2gEEyfh2KaVqMTFw&pullRequest=8
+
+Check warning on line 105 in frontend/src/components/CandidatesKanbanBoard.tsx
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Expected a `for-of` loop instead of a `for` loop with this simple iteration.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh2gEEyfh2KaVqMTFy&open=AaCh2gEEyfh2KaVqMTFy&pullRequest=8
+
+Check warning on line 128 in frontend/tests/candidate-phase-change.spec.ts
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Replace this fixed wait with a synchronization on an observable condition.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCiCECZ07UySxDOkuGQ&open=AaCiCECZ07UySxDOkuGQ&pullRequest=8
+
+Check warning on line 130 in frontend/tests/candidate-phase-change.spec.ts
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Replace this fixed wait with a synchronization on an observable condition.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh9OFHF4DpyVuA35Nv&open=AaCh9OFHF4DpyVuA35Nv&pullRequest=8
