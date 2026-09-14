@@ -45,7 +45,7 @@ new Error('mensaje:', error.response?.data) — el segundo argumento se ignora, 
 URL base hardcodeada en dos servicios.
 Sin manejo explícito de "no hay pasos definidos".
 
-## Set up playwright
+## 3. Set up playwright
 
 For improve tests coverage we will use playwright, thats already installed using:
 npm install -D @playwright/test
@@ -53,10 +53,42 @@ npx playwright install
 
 But `npx playwright init` fails and we need the file `playwright.config`. Fix the playwright init process
 
-## Set up playwright - reinforce should be at FE dir
+## 4. Set up playwright - reinforce PW is at FE dir
 
 For improve tests coverage we will use playwright, thats already installed at @frontend using:
 npm install -D @playwright/test
 npx playwright install
 
 But `npx playwright init` fails and we need the file `playwright.config`. Fix the playwright init process for the frontend context in this service.
+
+## 5. First test case
+
+Using playwright that is already installed and configured at @frontend.
+We need one case, where we validate the frontend `position` page.
+
+Test name: Escenario 1 — Carga de la página `position`
+
+Focus: Valida que la pantalla carga correctamente:
+
+Test should check:
+
+- El título de la posición se muestra.
+- Las columnas de fases del proceso están presentes.
+- Los candidatos aparecen en la columna correcta según su fase.
+
+Create the test using playwright and validate it can be correct ran.
+
+## 6. Second test case
+
+Following the tests needs, we  now want another integration test for frontend, using playwright. It should be:
+
+Test name: Escenario 2 — Cambio de fase de un candidato
+
+Focus: Valida el flujo completo de mover un candidato entre fases:
+
+Test should check:
+
+- Se puede arrastrar una tarjeta de una columna a otra (drag and drop).
+- La tarjeta aparece visualmente en la nueva columna.
+- Se dispara una petición `PUT /candidate/:id` al backend.
+- El body contiene la nueva fase y la respuesta es exitosa.
