@@ -40,16 +40,18 @@ const CandidatesKanbanBoard: React.FC = () => {
         
         // Build candidate to application mapping
         const appMap = new Map<number, { applicationId: number; currentStepId: number }>();
-        stagesData.forEach(stage => {
-          stage.candidates.forEach(candidate => {
-            candidate.applications?.forEach(app => {
-              appMap.set(candidate.id, {
-                applicationId: app.id,
-                currentStepId: app.interviewStep?.id || 0,
-              });
-            });
-          });
-        });
+        for (const stage of stagesData) {
+          for (const candidate of stage.candidates) {
+            if (candidate.applications) {
+              for (const app of candidate.applications) {
+                appMap.set(candidate.id, {
+                  applicationId: app.id,
+                  currentStepId: app.interviewStep?.id || 0,
+                });
+              }
+            }
+          }
+        }
         setCandidateApplications(appMap);
       } catch (err) {
         // Preserve backend error details if available
@@ -66,87 +68,84 @@ const CandidatesKanbanBoard: React.FC = () => {
     fetchData();
   }, []);
 
+  // Helper function to move candidate between stages in the UI
+  const moveCandidateInStages = useCallback((prevStages: Stage[], candidateId: number, newStageId: number) => {
+    const newStages = [...prevStages];
+    let candidateToMove: any = null;
+    
+    // Find and remove candidate from current stage
+    for (const stage of newStages) {
+      const idx = stage.candidates.findIndex(c => c.id === candidateId);
+      if (idx !== -1) {
+        candidateToMove = stage.candidates[idx];
+        stage.candidates.splice(idx, 1);
+        break;
+      }
+    }
+    
+    // Add candidate to new stage
+    if (!candidateToMove) return newStages;
+    
+    const targetStage = newStages.find(s => s.id === newStageId);
+    if (!targetStage) return newStages;
+    
+    // Update the candidate's interview step
+    candidateToMove.applications = [{
+      ...candidateToMove.applications?.[0],
+      interviewStep: {
+        id: newStageId,
+        name: targetStage.name,
+      },
+    }];
+    targetStage.candidates.push(candidateToMove);
+    
+    return newStages;
+  }, []);
+
   // Handle drag end event
   const handleDragEnd = useCallback(async (event: DragEndEvent) => {
     const { active, over } = event;
     
-    // Check if drop target is valid
     if (!over) return;
     
     const activeData = active.data.current as DragData;
     const overData = over.data.current as DragData;
     
-    // Only handle candidate drops into stages (using config constants for type checking)
-    if (activeData.type === Config.DND_TYPES.CANDIDATE && overData.type === Config.DND_TYPES.STAGE) {
-      const candidateId = activeData.candidateId;
-      const newStageId = overData.stageId;
-      
-      if (candidateId && newStageId) {
-        try {
-          // Get the application for this candidate
-          const appInfo = candidateApplications.get(candidateId);
-          if (appInfo) {
-            // Update the candidate's interview step in the database
-            await updateCandidateInterviewStep(candidateId, appInfo.applicationId, newStageId);
-            
-            // Optimistic update: move candidate in UI
-            setStages(prevStages => {
-              const newStages = [...prevStages];
-              let candidateToMove: any = null;
-              
-              // Find and remove candidate from current stage
-              for (let i = 0; i < newStages.length; i++) {
-                const idx = newStages[i].candidates.findIndex(c => c.id === candidateId);
-                if (idx !== -1) {
-                  candidateToMove = newStages[i].candidates[idx];
-                  newStages[i].candidates.splice(idx, 1);
-                  break;
-                }
-              }
-              
-              // Add candidate to new stage
-              if (candidateToMove) {
-                const targetStage = newStages.find(s => s.id === newStageId);
-                if (targetStage) {
-                  // Update the candidate's interview step
-                  candidateToMove.applications = [{
-                    ...candidateToMove.applications?.[0],
-                    interviewStep: {
-                      id: newStageId,
-                      name: targetStage.name,
-                    },
-                  }];
-                  targetStage.candidates.push(candidateToMove);
-                }
-              }
-              
-              return newStages;
-            });
-            
-            // Update the application mapping
-            setCandidateApplications(prev => {
-              const newMap = new Map(prev);
-              newMap.set(candidateId, {
-                applicationId: appInfo.applicationId,
-                currentStepId: newStageId,
-              });
-              return newMap;
-            });
-          }
-        } catch (err) {
-          console.error('Error updating candidate stage:', err);
-          // Preserve backend error details if available
-          const errorMessage = err.backendData ?
-            `${Config.ERROR_MESSAGES.UPDATE_FAILED} (${err.message})` :
-            Config.ERROR_MESSAGES.UPDATE_FAILED;
-          setError(errorMessage);
-          // Revert UI changes on error - reload data
-          const stagesData = await getCandidatesByState();
-          setStages(stagesData);
-        }
-      }
+    if (activeData.type !== Config.DND_TYPES.CANDIDATE || overData.type !== Config.DND_TYPES.STAGE) {
+      return;
     }
-  }, [candidateApplications]);
+    
+    const candidateId = activeData.candidateId;
+    const newStageId = overData.stageId;
+    
+    if (!candidateId || !newStageId) return;
+    
+    const appInfo = candidateApplications.get(candidateId);
+    if (!appInfo) return;
+    
+    try {
+      await updateCandidateInterviewStep(candidateId, appInfo.applicationId, newStageId);
+      
+      setStages(prevStages => moveCandidateInStages(prevStages, candidateId, newStageId));
+      
+      setCandidateApplications(prev => {
+        const newMap = new Map(prev);
+        newMap.set(candidateId, {
+          applicationId: appInfo.applicationId,
+          currentStepId: newStageId,
+        });
+        return newMap;
+      });
+    } catch (err) {
+      console.error('Error updating candidate stage:', err);
+      const errorMessage = err.backendData ?
+        `${Config.ERROR_MESSAGES.UPDATE_FAILED} (${err.message})` :
+        Config.ERROR_MESSAGES.UPDATE_FAILED;
+      setError(errorMessage);
+      const stagesData = await getCandidatesByState();
+      setStages(stagesData);
+    }
+  }, [candidateApplications, moveCandidateInStages]);
 
   // Handle card click
   const handleCardClick = useCallback((candidate: any) => {

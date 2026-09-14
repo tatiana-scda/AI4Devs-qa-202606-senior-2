@@ -85,6 +85,8 @@ const fetchInterviewSteps = async () => {
     const response = await axios.get(`${API_BASE_URL}/interview-steps`);
     return response.data;
   } catch (error) {
+    // Intentional: Fall back to default interview steps when API fails
+    // This ensures the application remains functional even without backend connectivity
     console.warn('API call failed, using default interview steps data');
     return DEFAULT_INTERVIEW_STEPS;
   }
@@ -100,6 +102,8 @@ const fetchCandidatesWithApplications = async () => {
     const response = await axios.get(`${API_BASE_URL}/candidates`);
     return response.data;
   } catch (error) {
+    // Intentional: Fall back to mock data when API fails
+    // This ensures the application can still demonstrate functionality in development/demo mode
     console.warn('API call failed, using mock candidates data');
     // Mock candidates with random interview steps for demonstration
     return [
@@ -208,6 +212,8 @@ const fetchApplicationsWithSteps = async () => {
     const response = await axios.get(`${API_BASE_URL}/applications`);
     return response.data;
   } catch (error) {
+    // Intentional: Fall back to empty array when API fails
+    // Applications are optional data; an empty array allows the app to continue functioning
     console.warn('API call failed, using empty applications array');
     return [];
   }

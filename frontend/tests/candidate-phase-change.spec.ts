@@ -121,13 +121,17 @@ test.describe('Escenario 2 — Cambio de fase de un candidato', () => {
     const dropY = techInterviewBox!.y + techInterviewBox!.height + 50;
     
     // Perform drag and drop
+    // Note: Synthetic mouse events in Playwright may not fully trigger @dnd-kit's drag and drop
+    // Wait for elements to be in a stable state before and after each action
     await page.mouse.move(startX, startY);
+    await expect(aliceCard).toBeVisible();
     await page.mouse.down();
-    await page.waitForTimeout(100);
+    await expect(aliceCard).toBeVisible();
     await page.mouse.move(dropX, dropY);
-    await page.waitForTimeout(100);
+    await expect(techInterviewHeader).toBeVisible();
     await page.mouse.up();
-    await page.waitForTimeout(500);
+    // Verify UI is still responsive after drag operation
+    await expect(page.getByText('CV Review')).toBeVisible();
     
     // ============================================
     // TEST 3 & 4: Verificar que la peticion PUT se dispararia
