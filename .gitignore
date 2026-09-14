@@ -12,6 +12,13 @@
 # testing
 **/coverage
 
+# Playwright
+**/test-results/
+**/playwright-report/
+**/playwright-traces/
+**/playwright-screenshots/
+**/playwright-videos/
+
 # production
 **/build
 **/dist

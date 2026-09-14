@@ -44,3 +44,58 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## End-to-End Testing with Playwright
+
+This project uses [Playwright](https://playwright.dev/) for end-to-end testing.
+
+### Available Scripts
+
+#### `npm run test:e2e`
+
+Runs Playwright tests in headless mode.
+
+#### `npm run test:e2e:headed`
+
+Runs Playwright tests with browsers visible (headed mode).
+
+#### `npm run test:e2e:ui`
+
+Runs Playwright tests in headed mode with slow mo (useful for UI debugging).
+
+#### `npm run test:e2e:debug`
+
+Runs Playwright tests with the Playwright Inspector open.
+
+### Configuration
+
+Playwright configuration is in `playwright.config.ts`. It includes:
+- Test directory: `./tests`
+- Multiple browser projects (Chromium, Firefox, WebKit, mobile emulation)
+- Automatic dev server startup (`npm run start`)
+- Screenshots and videos on test failure
+- HTML reporter
+
+### Writing Tests
+
+Place your test files in the `tests/` directory. Test files should have `.spec.ts` or `.spec.js` extension.
+
+Example test:
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('basic test', async ({ page }) => {
+  await page.goto('/');
+  await expect(page).toHaveTitle(/React App/);
+});
+```
+
+### Useful Commands
+
+- `npx playwright test` - Run all tests
+- `npx playwright test --headed` - Run tests with browsers visible
+- `npx playwright test --project=chromium` - Run only Chromium tests
+- `npx playwright test --grep="login"` - Run only tests matching "login"
+- `npx playwright show-report` - View the HTML test report
+- `npx playwright codegen` - Generate test code interactively

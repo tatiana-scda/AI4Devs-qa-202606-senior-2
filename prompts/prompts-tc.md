@@ -44,3 +44,19 @@ El endpoint usa interviewflow en minúsculas frente al interviewFlow del enuncia
 new Error('mensaje:', error.response?.data) — el segundo argumento se ignora, el detalle del error del backend se pierde silenciosamente.
 URL base hardcodeada en dos servicios.
 Sin manejo explícito de "no hay pasos definidos".
+
+## Set up playwright
+
+For improve tests coverage we will use playwright, thats already installed using:
+npm install -D @playwright/test
+npx playwright install
+
+But `npx playwright init` fails and we need the file `playwright.config`. Fix the playwright init process
+
+## Set up playwright - reinforce should be at FE dir
+
+For improve tests coverage we will use playwright, thats already installed at @frontend using:
+npm install -D @playwright/test
+npx playwright install
+
+But `npx playwright init` fails and we need the file `playwright.config`. Fix the playwright init process for the frontend context in this service.
