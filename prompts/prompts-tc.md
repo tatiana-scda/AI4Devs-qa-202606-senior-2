@@ -180,3 +180,38 @@ Check warning on line 130 in frontend/tests/candidate-phase-change.spec.ts
 Replace this fixed wait with a synchronization on an observable condition.
 
 See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh9OFHF4DpyVuA35Nv&open=AaCh9OFHF4DpyVuA35Nv&pullRequest=8
+
+## 9. Fix Sonar quality gate
+
+There is still issues with Sonar.
+
+Fix, fix the duplication code:  6.3% Duplication on New Code (required ≤ 3%)
+It needs to be bellow 3%.
+
+Also fix this remaining comments form Sonar, with minimal changes:
+Annotations
+
+Check warning on line 203 in frontend/src/services/kanbanService.js
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Handle this exception, don't catch it at all, or explain in a comment why it is ignored.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh2gCEyfh2KaVqMTFu&open=AaCh2gCEyfh2KaVqMTFu&pullRequest=8
+
+Check warning on line 92 in frontend/src/services/kanbanService.js
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Handle this exception, don't catch it at all, or explain in a comment why it is ignored.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh2gCEyfh2KaVqMTFt&open=AaCh2gCEyfh2KaVqMTFt&pullRequest=8
+
+Check warning on line 219 in frontend/src/services/kanbanService.js
+
+@sonarqubecloud sonarqubecloud / SonarCloud Code Analysis
+
+Handle this exception, don't catch it at all, or explain in a comment why it is ignored.
+
+See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh2gCEyfh2KaVqMTFv&open=AaCh2gCEyfh2KaVqMTFv&pullRequest=8
+
