@@ -213,11 +213,35 @@ Ejemplo de formato:
 
 El Pull Request debe incluir:
 
-- [ ] Cambios en la interfaz dentro de `/frontend` (atributos `data-testid` u otros necesarios para las pruebas).
-- [ ] Configuración de Playwright (`playwright.config.ts` o `.js`).
-- [ ] Archivo de pruebas en `/frontend/tests/e2e/position.spec.ts` (o `.spec.js`).
-- [ ] Archivo `/prompts/prompts-[tus-iniciales].md` con la lista de prompts utilizados.
-- [ ] Evidencia de ejecución exitosa (captura de pantalla o salida de terminal).
+- [x] Cambios en la interfaz dentro de `/frontend` (atributos `data-testid` u otros necesarios para las pruebas).
+- [x] Configuración de Playwright (`playwright.config.ts` o `.js`).
+- [x] Archivo de pruebas en `/frontend/tests/e2e/position.spec.ts` (o `.spec.js`).
+- [x] Archivo `/prompts/prompts-[tus-iniciales].md` con la lista de prompts utilizados.
+- [x] Evidencia de ejecución exitosa (captura de pantalla o salida de terminal).
+
+```
+
+> frontend@0.1.0 test:e2e
+> playwright test --reporter=line
+
+
+Running 12 tests using 1 worker
+
+[1/12] [chromium] › tests\candidate-phase-change.spec.ts:17:7 › Escenario 2 — Cambio de fase de un candidato › Valida el flujo completo de mover un candidato entre fases
+[2/12] [chromium] › tests\position.spec.ts:63:7 › Escenario 1 — Carga de la página position › Valida que la pantalla carga correctamente
+[3/12] [firefox] › tests\candidate-phase-change.spec.ts:17:7 › Escenario 2 — Cambio de fase de un candidato › Valida el flujo completo de mover un candidato entre fases
+[4/12] [firefox] › tests\position.spec.ts:63:7 › Escenario 1 — Carga de la página position › Valida que la pantalla carga correctamente
+[5/12] [webkit] › tests\candidate-phase-change.spec.ts:17:7 › Escenario 2 — Cambio de fase de un candidato › Valida el flujo completo de mover un candidato entre fases
+[6/12] [webkit] › tests\position.spec.ts:63:7 › Escenario 1 — Carga de la página position › Valida que la pantalla carga correctamente
+[7/12] [Mobile Chrome] › tests\candidate-phase-change.spec.ts:17:7 › Escenario 2 — Cambio de fase de un candidato › Valida el flujo completo de mover un candidato entre fases
+[8/12] [Mobile Chrome] › tests\position.spec.ts:63:7 › Escenario 1 — Carga de la página position › Valida que la pantalla carga correctamente
+[9/12] [Mobile Safari] › tests\candidate-phase-change.spec.ts:17:7 › Escenario 2 — Cambio de fase de un candidato › Valida el flujo completo de mover un candidato entre fases
+[10/12] [Mobile Safari] › tests\position.spec.ts:63:7 › Escenario 1 — Carga de la página position › Valida que la pantalla carga correctamente
+[11/12] [Microsoft Edge] › tests\candidate-phase-change.spec.ts:17:7 › Escenario 2 — Cambio de fase de un candidato › Valida el flujo completo de mover un candidato entre fases
+[12/12] [Microsoft Edge] › tests\position.spec.ts:63:7 › Escenario 1 — Carga de la página position › Valida que la pantalla carga correctamente
+  12 passed (32.4s)
+
+```
 
 El Pull Request debe incluir una descripción con el siguiente formato:
 

@@ -92,3 +92,7 @@ Test should check:
 - La tarjeta aparece visualmente en la nueva columna.
 - Se dispara una petición `PUT /candidate/:id` al backend.
 - El body contiene la nueva fase y la respuesta es exitosa.
+
+## 7. Validate tests
+
+Run `npm run test:e2e` and validate all tests as correctly running. If errors are found, fix the tests
