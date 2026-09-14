@@ -4,6 +4,26 @@ const Config = require('../config');
 const { API_BASE_URL, DEFAULT_INTERVIEW_STEPS } = Config;
 
 /**
+ * Helper to create a backend error with preserved details
+ * @param {Error} error - The original error from axios
+ * @param {string} fallbackMessage - Fallback message if no error details are available
+ * @returns {Error} Enhanced error with backend data preserved
+ */
+const createBackendError = (error, fallbackMessage) => {
+  const errorMessage = error.response?.data?.message || 
+                       error.response?.data?.error ||
+                       error.message ||
+                       fallbackMessage;
+  
+  const backendError = new Error(errorMessage);
+  if (error.response?.data) {
+    backendError.backendData = error.response.data;
+    backendError.status = error.response.status;
+  }
+  return backendError;
+};
+
+/**
  * Calculate average score for a candidate based on their interviews
  * @param {Array} interviews - Array of interview objects with score property
  * @returns {number} Average score, or 0 if no interviews or invalid data
