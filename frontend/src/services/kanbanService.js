@@ -105,7 +105,7 @@ const fetchInterviewSteps = async () => {
     const response = await axios.get(`${API_BASE_URL}/interview-steps`);
     return response.data;
   } catch (error) {
-    // Intentional: Fall back to default interview steps when API fails
+    // Intentional: Gracefully handle API failures by falling back to default data
     // This ensures the application remains functional even without backend connectivity
     console.warn('API call failed, using default interview steps data');
     return DEFAULT_INTERVIEW_STEPS;
@@ -122,7 +122,7 @@ const fetchCandidatesWithApplications = async () => {
     const response = await axios.get(`${API_BASE_URL}/candidates`);
     return response.data;
   } catch (error) {
-    // Intentional: Fall back to mock data when API fails
+    // Intentional: Gracefully handle API failures by falling back to mock data
     // This ensures the application can still demonstrate functionality in development/demo mode
     console.warn('API call failed, using mock candidates data');
     // Mock candidates with random interview steps for demonstration
@@ -232,7 +232,7 @@ const fetchApplicationsWithSteps = async () => {
     const response = await axios.get(`${API_BASE_URL}/applications`);
     return response.data;
   } catch (error) {
-    // Intentional: Fall back to empty array when API fails
+    // Intentional: Gracefully handle API failures by falling back to empty array
     // Applications are optional data; an empty array allows the app to continue functioning
     console.warn('API call failed, using empty applications array');
     return [];
@@ -255,21 +255,10 @@ const updateCandidateInterviewStep = async (candidateId, applicationId, intervie
       currentInterviewStep: interviewStepId,
     });
   } catch (error) {
-    // Preserve backend error details
-    const errorMessage = error.response?.data?.message || 
-                       error.response?.data?.error ||
-                       error.message ||
-                       'Unknown error updating candidate stage';
-    
-    const backendError = new Error(errorMessage);
-    // Add additional context from the error response if available
-    if (error.response?.data) {
-      backendError.backendData = error.response.data;
-      backendError.status = error.response.status;
-    }
-    
+    // Intentional: Catch and re-throw with preserved backend error details
+    // This ensures error information from the backend is not lost
     console.error('Backend error details:', error.response?.data);
-    throw backendError;
+    throw createBackendError(error, 'Unknown error updating candidate stage');
   }
 };
 
@@ -296,22 +285,15 @@ const getCandidatesByState = async () => {
 
     return organizeCandidatesByStage(interviewSteps, applications, candidates);
   } catch (error) {
+    // Intentional: Catch and re-throw with preserved backend error details
+    // This ensures error information from the backend is not lost
     console.error('Error grouping candidates by state:', error);
     // Re-throw with preserved error details
     if (error.backendData) {
       throw error;
     }
-    // Create new error with backend details if available
-    const errorMessage = error.response?.data?.message || 
-                       error.response?.data?.error ||
-                       error.message ||
-                       'Unknown error';
-    const backendError = new Error(errorMessage);
-    if (error.response?.data) {
-      backendError.backendData = error.response.data;
-      backendError.status = error.response.status;
-    }
-    throw backendError;
+    // Create new error with backend details using helper
+    throw createBackendError(error, 'Unknown error');
   }
 };
 

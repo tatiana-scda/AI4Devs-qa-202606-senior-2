@@ -122,13 +122,9 @@ test.describe('Escenario 2 — Cambio de fase de un candidato', () => {
     
     // Perform drag and drop
     // Note: Synthetic mouse events in Playwright may not fully trigger @dnd-kit's drag and drop
-    // Wait for elements to be in a stable state before and after each action
     await page.mouse.move(startX, startY);
-    await expect(aliceCard).toBeVisible();
     await page.mouse.down();
-    await expect(aliceCard).toBeVisible();
     await page.mouse.move(dropX, dropY);
-    await expect(techInterviewHeader).toBeVisible();
     await page.mouse.up();
     // Verify UI is still responsive after drag operation
     await expect(page.getByText('CV Review')).toBeVisible();

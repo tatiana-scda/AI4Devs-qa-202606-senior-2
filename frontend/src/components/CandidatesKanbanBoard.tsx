@@ -77,26 +77,24 @@ const CandidatesKanbanBoard: React.FC = () => {
     for (const stage of newStages) {
       const idx = stage.candidates.findIndex(c => c.id === candidateId);
       if (idx !== -1) {
-        candidateToMove = stage.candidates[idx];
+        candidateToMove = { ...stage.candidates[idx] };
         stage.candidates.splice(idx, 1);
         break;
       }
     }
     
-    // Add candidate to new stage
     if (!candidateToMove) return newStages;
     
     const targetStage = newStages.find(s => s.id === newStageId);
     if (!targetStage) return newStages;
     
-    // Update the candidate's interview step
-    candidateToMove.applications = [{
-      ...candidateToMove.applications?.[0],
-      interviewStep: {
-        id: newStageId,
-        name: targetStage.name,
-      },
-    }];
+    candidateToMove = {
+      ...candidateToMove,
+      applications: [{
+        ...candidateToMove.applications?.[0],
+        interviewStep: { id: newStageId, name: targetStage.name },
+      }],
+    };
     targetStage.candidates.push(candidateToMove);
     
     return newStages;
@@ -106,14 +104,13 @@ const CandidatesKanbanBoard: React.FC = () => {
   const handleDragEnd = useCallback(async (event: DragEndEvent) => {
     const { active, over } = event;
     
+    // Early returns for invalid states
     if (!over) return;
     
     const activeData = active.data.current as DragData;
     const overData = over.data.current as DragData;
     
-    if (activeData.type !== Config.DND_TYPES.CANDIDATE || overData.type !== Config.DND_TYPES.STAGE) {
-      return;
-    }
+    if (activeData.type !== Config.DND_TYPES.CANDIDATE || overData.type !== Config.DND_TYPES.STAGE) return;
     
     const candidateId = activeData.candidateId;
     const newStageId = overData.stageId;
@@ -123,6 +120,11 @@ const CandidatesKanbanBoard: React.FC = () => {
     const appInfo = candidateApplications.get(candidateId);
     if (!appInfo) return;
     
+    await handleStageUpdate(candidateId, appInfo, newStageId);
+  }, [candidateApplications, moveCandidateInStages, handleStageUpdate]);
+
+  // Helper to handle stage update and state management
+  const handleStageUpdate = useCallback(async (candidateId: number, appInfo: { applicationId: number; currentStepId: number }, newStageId: number) => {
     try {
       await updateCandidateInterviewStep(candidateId, appInfo.applicationId, newStageId);
       
@@ -145,7 +147,7 @@ const CandidatesKanbanBoard: React.FC = () => {
       const stagesData = await getCandidatesByState();
       setStages(stagesData);
     }
-  }, [candidateApplications, moveCandidateInStages]);
+  }, [moveCandidateInStages]);
 
   // Handle card click
   const handleCardClick = useCallback((candidate: any) => {
