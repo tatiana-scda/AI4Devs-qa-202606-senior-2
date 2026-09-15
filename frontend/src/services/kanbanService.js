@@ -4,6 +4,36 @@ const Config = require('../config');
 const { API_BASE_URL, DEFAULT_INTERVIEW_STEPS } = Config;
 
 /**
+ * Helper to create mock candidate with interviews
+ * @private
+ */
+const createMockCandidate = (id, firstName, lastName, email, avgScore, appId, positionId, stepIndex, interviewScores) => ({
+  id,
+  firstName,
+  lastName,
+  email,
+  averageScore: avgScore,
+  applications: [{
+    id: appId,
+    candidateId: id,
+    positionId,
+    currentInterviewStep: stepIndex + 1,
+    interviewStep: DEFAULT_INTERVIEW_STEPS[stepIndex],
+    interviews: interviewScores.map(score => ({ score, result: 'Pass' })),
+  }],
+});
+
+// Mock candidate data used as fallback when API fails
+// This ensures the application can demonstrate functionality in development/demo mode
+const MOCK_CANDIDATES = [
+  createMockCandidate(1, 'John', 'Doe', 'john.doe@example.com', 4.5, 1, 1, 0, [4, 5]),
+  createMockCandidate(2, 'Jane', 'Smith', 'jane.smith@example.com', 3.8, 2, 1, 1, [4, 4, 3]),
+  createMockCandidate(3, 'Bob', 'Johnson', 'bob.johnson@example.com', 4.2, 3, 2, 2, [5, 4]),
+  createMockCandidate(4, 'Alice', 'Williams', 'alice.williams@example.com', 4.7, 4, 1, 3, [5, 5, 4]),
+  createMockCandidate(5, 'Charlie', 'Brown', 'charlie.brown@example.com', 3.5, 5, 3, 4, [4, 3]),
+];
+
+/**
  * Helper to create a backend error with preserved details
  * @param {Error} error - The original error from axios
  * @param {string} fallbackMessage - Fallback message if no error details are available
@@ -125,101 +155,7 @@ const fetchCandidatesWithApplications = async () => {
     // Intentional: Gracefully handle API failures by falling back to mock data
     // This ensures the application can still demonstrate functionality in development/demo mode
     console.warn('API call failed, using mock candidates data');
-    // Mock candidates with random interview steps for demonstration
-    return [
-      {
-        id: 1,
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com',
-        averageScore: 4.5,
-        applications: [{
-          id: 1,
-          candidateId: 1,
-          positionId: 1,
-          currentInterviewStep: 1,
-          interviewStep: DEFAULT_INTERVIEW_STEPS[0],
-          interviews: [
-            { score: 4, result: 'Pass' },
-            { score: 5, result: 'Pass' },
-          ],
-        }],
-      },
-      {
-        id: 2,
-        firstName: 'Jane',
-        lastName: 'Smith',
-        email: 'jane.smith@example.com',
-        averageScore: 3.8,
-        applications: [{
-          id: 2,
-          candidateId: 2,
-          positionId: 1,
-          currentInterviewStep: 2,
-          interviewStep: DEFAULT_INTERVIEW_STEPS[1],
-          interviews: [
-            { score: 4, result: 'Pass' },
-            { score: 4, result: 'Pass' },
-            { score: 3, result: 'Pass' },
-          ],
-        }],
-      },
-      {
-        id: 3,
-        firstName: 'Bob',
-        lastName: 'Johnson',
-        email: 'bob.johnson@example.com',
-        averageScore: 4.2,
-        applications: [{
-          id: 3,
-          candidateId: 3,
-          positionId: 2,
-          currentInterviewStep: 3,
-          interviewStep: DEFAULT_INTERVIEW_STEPS[2],
-          interviews: [
-            { score: 5, result: 'Pass' },
-            { score: 4, result: 'Pass' },
-          ],
-        }],
-      },
-      {
-        id: 4,
-        firstName: 'Alice',
-        lastName: 'Williams',
-        email: 'alice.williams@example.com',
-        averageScore: 4.7,
-        applications: [{
-          id: 4,
-          candidateId: 4,
-          positionId: 1,
-          currentInterviewStep: 4,
-          interviewStep: DEFAULT_INTERVIEW_STEPS[3],
-          interviews: [
-            { score: 5, result: 'Pass' },
-            { score: 5, result: 'Pass' },
-            { score: 4, result: 'Pass' },
-          ],
-        }],
-      },
-      {
-        id: 5,
-        firstName: 'Charlie',
-        lastName: 'Brown',
-        email: 'charlie.brown@example.com',
-        averageScore: 3.5,
-        applications: [{
-          id: 5,
-          candidateId: 5,
-          positionId: 3,
-          currentInterviewStep: 5,
-          interviewStep: DEFAULT_INTERVIEW_STEPS[4],
-          interviews: [
-            { score: 4, result: 'Pass' },
-            { score: 3, result: 'Pass' },
-          ],
-        }],
-      },
-    ];
+    return MOCK_CANDIDATES;
   }
 };
 

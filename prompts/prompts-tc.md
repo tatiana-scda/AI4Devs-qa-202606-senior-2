@@ -215,3 +215,6 @@ Handle this exception, don't catch it at all, or explain in a comment why it is 
 
 See more on https://sonarcloud.io/project/issues?id=LIDR-academy_AI4Devs-qa-202606-senior-2&issues=AaCh2gCEyfh2KaVqMTFv&open=AaCh2gCEyfh2KaVqMTFv&pullRequest=8
 
+## 10. Sonar
+
+Keep code duplication under 3% and run check to validate before finishing the task.
